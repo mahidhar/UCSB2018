@@ -1,0 +1,32 @@
+[1] Get an interactive node:
+
+srun --pty --nodes=1 --ntasks-per-node=24 -p compute --reservation=UCSB2018Res -t 02:00:00 --wait 0 /bin/bash
+
+[2] Load the singularity module and get an interactive shell
+
+module load singularity
+singularity shell /share/apps/gpu/singularity/sdsc_ubuntu_tf1.1_keras_R.img 
+
+[3] Clone your repos
+
+git clone https://github.com/sinkovit/PythonSeries
+git clone https://github.com/sinkovit/RSeries
+
+(Do this in the singularity environment since our default git will throw a TSLV1 error)
+
+[4] Launch the notebook
+
+ipython notebook --no-browser --ip="*" &
+
+This will give you an address which has localhost in it and a token. Something like:
+
+http://localhost:8888/?token=389587c9d1b69f8f595e7d8bfdd83c9961ed26b8b3f1bb3e
+
+You can replace localhost with comet-02-17.sdsc.edu (or what ever host you get) and then paste it into your browser. That should get you into the running notebook. From there everything should be working as a regular notebook. Note: This token is your auth so don't email/send it around (I already stopped the above link).
+
+[5] Once you are done with your work:
+
+fg
+and then kill the task and shutdown the notebook server.
+
+[6] exit twice (once for singularity, once for ending job) to logout of compute node.
